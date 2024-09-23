@@ -11,11 +11,10 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.awt.*;
 import java.time.Duration;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 
 public class MumzworldTest {
     WebDriver driver;
@@ -27,7 +26,6 @@ public class MumzworldTest {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
-        //WebDriverWait wait = new WebDriverWait(driver, 20);
 
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
@@ -37,32 +35,7 @@ public class MumzworldTest {
     @Test
     public void purchaseProduct() {
 
-        // Register a new user
-//        WebElement registerButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div[class='accountTrigger-root-14j'] button[title='Register']")));
-//        registerButton.click();
-//
-//        // Fill out registration form
-//        WebElement firstNameField = driver.findElement(By.name("customer.firstname"));
-//        firstNameField.sendKeys("Hadhi");
-//
-//        WebElement lastNameField = driver.findElement(By.name("customer.lastname"));
-//        lastNameField.sendKeys("Abdul");
-//
-//        WebElement emailField = driver.findElement(By.name("customer.email"));
-//        emailField.sendKeys("hadhi631@gmail.com");
-//
-//        WebElement passwordField = driver.findElement(By.name("password"));
-//        passwordField.sendKeys("Hadhi@1234");
-//
-//        WebElement agreeTermsCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#terms_and_conditions"))); // Replace with actual locator
-//        agreeTermsCheckbox.click();
-//
-//        // Submit registration
-//        WebElement submitButton = driver.findElement(By.cssSelector("button[title='Register'] span[class='button-content-7Hl']"));
-//        submitButton.click();
-
         // Search for a product
-
         try {
             WebElement searchProduct = driver.findElement(By.cssSelector("input[placeholder='What are you looking for?']"));
             searchProduct .sendKeys("Skullcandy - Crusher Evo Wireless Over Ear Chill Headphones - Grey");
@@ -117,11 +90,32 @@ public class MumzworldTest {
         WebElement checkoutButton = driver.findElement(By.cssSelector("button[class='proceedToCheckoutBtn-button-3S2 button-root_highPriority-2iR button-root-dxQ clickable-root-orq']"));
         checkoutButton.click();
 
-        
+        // Signup for checkout
+        WebElement signUpButton = driver.findElement(By.cssSelector("button[title='Sign up'] span[class='button-content-7Hl']"));
+        signUpButton.click();
+
+        // Fill out registration form
+        WebElement firstNameField = driver.findElement(By.name("customer.firstname"));
+        firstNameField.sendKeys("Aysha");
+
+        WebElement lastNameField = driver.findElement(By.name("customer.lastname"));
+        lastNameField.sendKeys("Rahiman");
+
+        WebElement emailField = driver.findElement(By.name("customer.email"));
+        emailField.sendKeys(generateRandomEmail());
+
+        WebElement passwordField = driver.findElement(By.name("password"));
+        passwordField.sendKeys("Aysh@1234");
+
+        // Submit registration
+        WebElement submitButton = driver.findElement(By.cssSelector("button[title='Register'] span[class='button-content-7Hl']"));
+        submitButton.click();
+
     }
 
     @AfterClass
     public void tearDown() {
+        // Commenting this, so that reviewer can see the app flow properly
         //driver.quit();
     }
 
@@ -134,6 +128,14 @@ public class MumzworldTest {
         } catch (Exception e) {
             System.out.println("Exception in moving and clicking cursor");
         }
+    }
+
+    private String generateRandomEmail() {
+        Random r = new Random();
+        int low = 100;
+        int high = 10000;
+        int randomNum = r.nextInt(high-low) + low;
+        return "aysharah+" + randomNum + "@gmail.com";
     }
 }
 
